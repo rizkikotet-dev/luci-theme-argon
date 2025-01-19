@@ -42,32 +42,16 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: luci-theme-argon
-          path: ${{ github.workspace }}/artifacts/bin/packages/*/action/luci-theme-argon*
-
-  release_ipk:
-    needs: build_ipk
-    name: Release IPK Package
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Download IPK Artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: luci-theme-argon
-
-      - name: Prepare Release Files
-        run: |
-          mkdir -p release
-          cp -rf ./luci-theme-argon* ./release/
+          path: ${{ github.workspace }}/artifacts/bin/packages/*/action/luci-theme-argon_*.ipk
 
       - name: Upload Release Asset
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ./release/*
+          file: ${{ github.workspace }}/artifacts/bin/packages/*/action/luci-theme-argon_*.ipk
           overwrite: true
-          tag: "v${{ needs.build_ipk.outputs.version }}"
+          tag: "v{{ steps.version.outputs.version }}"
           file_glob: true
           body: |
             This is a new release of Argon theme.
-            - Version: ${{ needs.build_ipk.outputs.version }}
+            - Version: "v{{ steps.version.outputs.version }}"
