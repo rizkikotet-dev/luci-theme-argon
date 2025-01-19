@@ -12,8 +12,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         with:
-          repository: rizkikotet-dev/luci-theme-argon
-          ref: master
+          repository: ${{ github.repository }}
+          ref: ${{ github.ref }}
 
       - name: Extract version
         id: version
@@ -26,6 +26,7 @@ jobs:
         run: |
           echo "Setting up the build environment..."
           mkdir -p feeds artifacts
+          ls -la
           cp -rf ./luci-theme-argon ./feeds
 
       - name: Building Luci Argon
