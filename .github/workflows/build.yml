@@ -26,13 +26,13 @@ jobs:
         run: |
           echo "Setting up the build environment..."
           mkdir -p feeds artifacts
-          cp -rf ./luci-theme-argon ./feeds
+          # cp -rf ./luci-theme-argon ./feeds
 
       - name: Building Luci Argon
         uses: openwrt/gh-action-sdk@main
         env:
           ARCH: x86_64-23.05.5
-          FEED_DIR: ${{ github.workspace }}/feeds
+          FEED_DIR: ${{ github.workspace }}
           PACKAGES: luci-theme-argon
           NO_SHFMT_CHECK: 1
 
