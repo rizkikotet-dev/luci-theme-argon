@@ -25,9 +25,9 @@ jobs:
       - name: Preparing Build Environment
         run: |
           echo "Setting up the build environment..."
-          mkdir -p feeds artifacts
+          mkdir -p feeds/luci-theme-argon artifacts
           ls -la
-          cp -rf ./luci-theme-argon ./feeds
+          cp -rf ./* ./feeds/luci-theme-argon
 
       - name: Building Luci Argon
         uses: openwrt/gh-action-sdk@main
