@@ -86,7 +86,7 @@
 	<meta name="msapplication-TileColor" content="<%=bar_color%>">
 	<meta name="msapplication-TileImage" content="<%=media%>/icon/ms-icon-144x144.png">
 	<meta name="theme-color" content="<%=bar_color%>">
-	<link rel="stylesheet" href="<%=media%>/css/cascade.css<%# ?v=PKG_VERSION %>">
+	<link rel="stylesheet" href="<%=media%>/css/cascade.css?v=git-24.365.26963-5df8536">
 	<style title="text/css">
         <% if mode == 'normal' then %>
             @media (prefers-color-scheme: dark) {
@@ -115,7 +115,7 @@
 		<%=css %>
 	</style>
 	<% end -%>
-	<script src="<%=media%>/js/polyfill.min.js"></script>
+	<script src="<%=media%>/js/polyfill.min.js?v=git-24.365.26963-5df8536"></script>
 	<script src="<%=url('admin/translations', luci.i18n.context.lang)%>?v=<%=ver.luciversion%>"></script>
 	<script src="<%=resource%>/cbi.js?v=<%=ver.luciversion%>"></script>
 	<script src="<%=resource%>/luci.js?v=<%=ver.luciversion%>"></script>
@@ -129,15 +129,35 @@
 	<div class="main">
 		<div class="main-left" id="mainmenu" style="display:none">
 			<div class="sidenav-header d-flex align-items-center">
-				<a class="brand" href="#"><%=brand_name%></a>
+			<a id="logo" href="{{ ctx.authsession ? dispatcher.build_url('admin/status/overview') : '#' }}"><img src="<%=media%>/brand.png" width="200" height="50" alt="OpenWrt"></a>
+				
 				<div class="ml-auto">
 					<!-- Sidenav toggler -->
 					<div class="sidenav-toggler d-none d-xl-block active" data-action="sidenav-unpin"
 						data-target="#sidenav-main">
+						<style>
+                        .sidenav-toggler-inner a img {
+                            display: inline;
+                        }
+                        @media (min-width: 768px) {
+                            .sidenav-toggler-inner a img {
+                                display: none;
+                            }
+                        }
+                        </style>
 						<div class="sidenav-toggler-inner">
 							<i class="sidenav-toggler-line"></i>
 							<i class="sidenav-toggler-line"></i>
 							<i class="sidenav-toggler-line"></i>
+							<tr>
+                            <a href='/cgi-bin/luci/admin/services/openclash'><img src="<%=media%>/navbar/clash.png" width="35" height="35"></a>
+                            <a href='/cgi-bin/luci/admin/services/passwall'><img src="<%=media%>/navbar/passwall.png" width="35" height="35"></a>
+                            <a href='/cgi-bin/luci/admin/services/mihomo'><img src="<%=media%>/navbar/mihomo.png" width="35" height="35"></a>
+                            <a href='/cgi-bin/luci/admin/system/tinyfm'><img src="<%=media%>/navbar/tinyfm.png" width="35" height="35"></a>
+                            <a href='/cgi-bin/luci/admin/services/ttyd'><img src="<%=media%>/navbar/terminal.png" width="35" height="35"></a>
+                            <a href='/cgi-bin/luci/admin/status/netmon'><img src="<%=media%>/navbar/netmon.png" width="35" height="35"></a>
+                            <a href='/cgi-bin/luci/admin/network/network'><img src="<%=media%>/navbar/interface.png" width="35" height="35"></a>
+                            </tr>
 						</div>
 					</div>
 				</div>
@@ -146,13 +166,32 @@
 		<div class="main-right">
 			<header class="bg-primary">
 				<div class="fill">
-					<div class="container">
-						<div class="flex1">
-							<a class="showSide"></a>
-							<a class="brand" href="#"><%=brand_name%></a>
-						</div>
-						<div class="status" id="indicators"></div>
-					</div>
+                    <style>
+                    .flex1 a img {
+                        display: none;
+                    }
+                    
+                    @media (min-width: 768px) {
+                        .flex1 a img {
+                            display: inline;
+                        }
+                    }
+                    </style>
+                    <div class="container">
+                        <div class="flex1">
+                            <a class="showSide"></a>
+                            <a href='/cgi-bin/luci/admin/services/openclash'><img src="<%=media%>/navbar/clash.png" width="35" height="35"></a>
+                            <a href='/cgi-bin/luci/admin/services/passwall'><img src="<%=media%>/navbar/passwall.png" width="35" height="35"></a>
+                            <a href='/cgi-bin/luci/admin/services/mihomo'><img src="<%=media%>/navbar/mihomo.png" width="35" height="35"></a>
+                            <a href='/cgi-bin/luci/admin/system/tinyfm'><img src="<%=media%>/navbar/tinyfm.png" width="35" height="35"></a>
+                            <a href='/cgi-bin/luci/admin/services/ttyd/ttyd'><img src="<%=media%>/navbar/terminal.png" width="35" height="35"></a>
+                            <a href='/cgi-bin/luci/admin/status/netmon'><img src="<%=media%>/navbar/netmon.png" width="35" height="35"></a>
+                            <a href='/cgi-bin/luci/admin/network/network'><img src="<%=media%>/navbar/interface.png" width="35" height="35"></a>
+                        </div>
+                        <div class="fill">
+                            <div class="status" id="indicators"></div>
+                        </div>
+                    </div>
 				</div>
 			</header>
 			<div class="darkMask"></div>

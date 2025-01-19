@@ -9,4 +9,19 @@ if [ "$PKG_UPGRADE" != 1 ]; then
 	EOF
 fi
 
+cat << 'EOF' > /etc/config/argon
+config global
+	option primary '#7b86ad'
+	option dark_primary '#7b86ad'
+	option blur '0'
+	option blur_dark '0'
+	option transparency '0.3'
+	option transparency_dark '0.3'
+	option mode 'light'
+	option online_wallpaper 'none'
+EOF
+
+if grep -q "ImmortalWrt" /etc/openwrt_release; then
+  sed -i -E "s|services/ttyd|system/ttyd|g" /usr/lib/lua/luci/view/themes/argon/header.htm
+fi
 exit 0

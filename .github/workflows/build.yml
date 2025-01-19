@@ -1,0 +1,71 @@
+name: Build and Release Argon
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build_ipk:
+    name: Build Argon
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        with:
+          repository: Thaolga/luci-theme-argon
+          ref: main
+
+      - name: Extract version
+        id: version
+        run: |
+          VERSION=$(grep 'PKG_VERSION:=' ./Makefile | awk -F '=' '{print $2}')
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+          echo "New Version: ${VERSION}"
+
+      - name: Preparing Build Environment
+        run: |
+          echo "Setting up the build environment..."
+          mkdir -p feeds artifacts
+          cp -rf ./luci-theme-argon ./feeds
+
+      - name: Building Luci Argon
+        uses: openwrt/gh-action-sdk@main
+        env:
+          ARCH: x86_64-23.05.5
+          FEED_DIR: ${{ github.workspace }}/feeds
+          PACKAGES: luci-theme-argon
+          NO_SHFMT_CHECK: 1
+
+      - name: Upload IPK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: luci-theme-argon
+          path: ${{ github.workspace }}/artifacts/bin/packages/*/action/luci-theme-argon*
+
+  release_ipk:
+    needs: build_ipk
+    name: Release IPK Package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download IPK Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: luci-theme-argon
+
+      - name: Prepare Release Files
+        run: |
+          mkdir -p release
+          cp -rf ./luci-theme-argon* ./release/
+
+      - name: Upload Release Asset
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: ./release/*
+          overwrite: true
+          tag: "v${{ needs.build_ipk.outputs.version }}"
+          file_glob: true
+          body: |
+            This is a new release of Argon theme.
+            - Version: ${{ needs.build_ipk.outputs.version }}
