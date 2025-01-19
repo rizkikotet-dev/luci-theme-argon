@@ -33,6 +33,7 @@ jobs:
         uses: openwrt/gh-action-sdk@main
         env:
           ARCH: x86_64-23.05.5
+          ARTIFACTS_DIR: ${{ github.workspace }}/artifacts
           FEED_DIR: ${{ github.workspace }}/feeds
           PACKAGES: luci-theme-argon
           NO_SHFMT_CHECK: 1
