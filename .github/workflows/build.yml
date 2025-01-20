@@ -50,8 +50,7 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: ${{ github.workspace }}/artifacts/bin/packages/*/action/luci-theme-argon_*.ipk
           overwrite: true
-          tag: "v{{ steps.version.outputs.version }}"
+          tag: latest
           file_glob: true
           body: |
             This is a new release of Argon theme.
-            - Version: "v{{ steps.version.outputs.version }}"
